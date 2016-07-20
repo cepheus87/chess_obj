@@ -37,7 +37,8 @@ int Board::getBoardSize() const{
 void Board::init(char board[BOARD_SIZE][BOARD_SIZE])
 {
 
-    const char figuresRow[BOARD_SIZE] = {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'};
+    //const char figuresRow[BOARD_SIZE] = {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'};
+	const char figuresRow[BOARD_SIZE] = {'R', '.', 'B', '.', 'K', 'B', 'N', 'R'};
 
 	memset(board, '.', sizeof(char) * BOARD_SIZE * BOARD_SIZE);
 

@@ -21,8 +21,11 @@ public:
 	Figure(char);
 	inline bool isWhite(char);
 	bool move(std::pair<int,int> , std::pair<int,int>, Board& );
-	bool moveKing(std::pair<int,int>, std::pair<int,int>, Board& );
 	bool isYour(std::pair<int,int> endPos, Board& board );
+
+	bool moveKing(std::pair<int,int>, std::pair<int,int>, Board& );
+	bool moveRook(std::pair<int,int> startPos, std::pair<int,int> endPos, Board& board );
+
 };
 
 #endif /* FIGURE_H_ */

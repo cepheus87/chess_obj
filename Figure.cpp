@@ -41,7 +41,7 @@ bool Figure::move(std::pair<int,int> startPos, std::pair<int,int> endPos, Board&
 
 	  case 'r':
 	  case 'R':
-	//    returnStatement = moveRook();
+	    returnStatement = moveRook(startPos, endPos, boardObj);
 	    break;
 
 	  case 'n':
@@ -101,4 +101,50 @@ bool Figure::moveKing(std::pair<int,int> startPos, std::pair<int,int> endPos, Bo
     return false;
   }
 
+}
+
+bool Figure::moveRook(std::pair<int,int> startPos, std::pair<int,int> endPos, Board& boardObj )
+{
+
+	char* tempTable;
+	boardObj.getBoard(&tempTable);
+	char (*board)[BOARD_SIZE] = reinterpret_cast<char (*)[BOARD_SIZE]>(tempTable);
+
+
+	if( !( (startPos.first == endPos.first) || (startPos.second == endPos.second) ) )
+	{
+		cout<<"To nie jest poprawny ruch wieza"<<endl;
+		return false;
+	}
+	else if(startPos.second == endPos.second)
+	{
+		int direction = (endPos.first - startPos.first > 0) ? 1 : -1;
+		int y = startPos.first + direction;
+		while(! (y == endPos.first) )
+		{
+			if (board[y][startPos.second] != '.')
+			{
+				cout<<"Droga ruchu w pionie nie jest pusta"<<endl;
+				return false;
+			}
+			y += direction;
+		}
+	}
+	else if(startPos.first == endPos.first)
+	{
+		int direction = (endPos.second - startPos.second > 0) ? 1 : -1;
+		cout<<startPos.second<<" "<<endPos.second<<endl;
+		int x = startPos.second + direction;
+		while(! (x == endPos.second) )
+		{
+			if (board[startPos.first][x] != '.')
+			{
+				cout<<"Droga ruchu w poziomie nie jest pusta"<<endl;
+				return false;
+			}
+			x+=direction;
+		}
+	}
+
+	return true;
 }
