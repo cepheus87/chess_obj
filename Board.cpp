@@ -34,56 +34,13 @@ void Board::init(char board[BOARD_SIZE][BOARD_SIZE])
 
 }
 
-void Board::draw(char board[BOARD_SIZE][BOARD_SIZE],const Interface& inter)
-{
-	short firstLine = 4;
-
-    inter.gotoXY(0, firstLine);
-
-    char fieldName = 'A';	//Zmienna uzyta do wypisania rzedu liter, okreslajacych poszczegolne pola szachownicy
 
 
-	cout<< "   ";
 
-	for (int i = 0; i < BOARD_SIZE; i++)
-	{
-		cout << fieldName << " ";
-		fieldName++;
-	}
-	cout << endl << "  ----------------" << endl;
-
-	for (int i = BOARD_SIZE - 1; i >= 0; i--)
-	{
-
-		cout << i+1 << "| ";
-
-		for (unsigned j = 0; j < BOARD_SIZE; j++)
-		{
-
-			cout << board[i][j]<<" ";
-		}
-
-		cout << "|" << i+1 << endl;
-	}
-
-	fieldName = 'A';	//Zmienna uzyta do wypisania rzedu liter, okreslajacych poszczegolne pola szachownicy
-	cout << "  ----------------" << endl;
-	cout<< "   ";
-
-	for (int i = 0; i < BOARD_SIZE; i++)
-	{
-		cout << fieldName << " ";
-		fieldName++;
-	}
-
-	cout<<endl;
-}
-
-
-std::pair<bool, std::string> Board::checkMove(std::string positions, char board[BOARD_SIZE][BOARD_SIZE])
+bool Board::checkMove(std::string &positions, char board[BOARD_SIZE][BOARD_SIZE])
 {
 	string quantityOfCharacters="";
-	pair<bool, string> moveCorrectness(true, "");
+	bool moveCorrectness = true;
 
 	for(size_t i = 0; i < positions.length(); i++ )
 	{
@@ -100,22 +57,23 @@ std::pair<bool, std::string> Board::checkMove(std::string positions, char board[
 		cout << "quantityOfCharacters: "<<quantityOfCharacters<<endl;
 	#endif
 
-	if(quantityOfCharacters.length()!=4){
+	if(quantityOfCharacters.length()!=4)
+	{
 
 		if(quantityOfCharacters.length()==3||quantityOfCharacters.length()==2)
-		            {
-		            cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" znaki typu litera lub cyfra, powinny byc 4!";
-		            }else if (quantityOfCharacters.length()==0)
-		            {
-		            cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" liter i cyfr, powinny byc 4!";
-		            }else if (quantityOfCharacters.length()==1)
-		            {
-		            cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" litere lub cyfre, powinny byc 4!";
-		            } else{
-		            cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" znakow typu litera lub cyfra, powinny byc tylko 4!";
-		            }
+			{
+			cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" znaki typu litera lub cyfra, powinny byc 4!";
+			}else if (quantityOfCharacters.length()==0)
+			{
+			cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" liter i cyfr, powinny byc 4!";
+			}else if (quantityOfCharacters.length()==1)
+			{
+			cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" litere lub cyfre, powinny byc 4!";
+			} else{
+			cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" znakow typu litera lub cyfra, powinny byc tylko 4!";
+			}
 
-		moveCorrectness.first= false;
+		moveCorrectness = false;
 		return moveCorrectness;
 	}
 
@@ -139,7 +97,7 @@ std::pair<bool, std::string> Board::checkMove(std::string positions, char board[
 			}else{
 
 				cout<<"Znak "<<i+1<<" powinien byc litera a jest cyfra!"<<endl;
-				moveCorrectness.first= false;
+				moveCorrectness = false;
 
 			}
 		}
@@ -163,18 +121,18 @@ std::pair<bool, std::string> Board::checkMove(std::string positions, char board[
 		if (isEmpty(startPos, board))
 		{
 	    cout<<"To pole jest puste."<<endl;
-	    moveCorrectness.first= false;
+	    moveCorrectness = false;
 	    return moveCorrectness;
 		}
 
 	if (checkChar == false)
 	{
-		moveCorrectness.first= false;
+		moveCorrectness = false;
 		return moveCorrectness;
 	}
 
-	moveCorrectness.second=quantityOfCharacters;
-	return moveCorrectness;
+	positions = quantityOfCharacters;
+
 }
 
 bool Board::isAllowed(std::pair<int,int> endPos, char board[BOARD_SIZE][BOARD_SIZE], bool player)

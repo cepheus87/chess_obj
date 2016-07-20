@@ -17,6 +17,7 @@
 #include <sstream>
 #include <cctype>
 #include <iomanip>
+#include "Board.h"
 
 #ifdef _WIN32
     #include <windows.h>
@@ -24,11 +25,24 @@
 
 using namespace std;
 
-class Interface {
+class Interface
+{
+
 public:
+
 	Interface();
 	virtual ~Interface();
 	void gotoXY(short,short) const;
+	void clearLine(short y);
+	void menu();
+	void help();
+	void draw(char [BOARD_SIZE][BOARD_SIZE]);
+	std::string checkCommands(std::string);
+
+private:
+
+
+
 };
 
 #endif /* INTERFACE_H_ */
