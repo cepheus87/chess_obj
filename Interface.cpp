@@ -33,8 +33,15 @@ void Interface::gotoXY(short x, short y) const
 
 #endif
 
-void Interface::changeFigurePosition(int startXPostoDrow,int startYPostoDrow,int endXPostoDrow,int endYPostoDrow,char chosenFigure)
+void Interface::changeFigurePosition(Board &boardObj)
 {
+	int startXPostoDrow = boardObj.getStartXPostoDrow();
+	int startYPostoDrow = boardObj.getStartYPostoDrow();
+
+	int endXPostoDrow = boardObj.getEndXPostoDrow();
+	int endYPostoDrow = boardObj.getEndYPostoDrow();
+
+	char chosenFigure = boardObj.getChosenFigure();
 
 	gotoXY(startXPostoDrow,startYPostoDrow);
 	printf(".");

@@ -32,6 +32,7 @@ class Board
 
 private:
 	char* fBoard;
+
 	int fBoardSize;
 
 	void allocBoardMem();
@@ -39,6 +40,12 @@ private:
 	bool isAllowed(std::pair<int,int>, char [BOARD_SIZE][BOARD_SIZE], bool);
 	bool isEmpty(std::pair<int,int>, char board[BOARD_SIZE][BOARD_SIZE] );
 	std::pair<int,int> getPosition(std::string);
+
+	int startXPostoDrow;
+	int startYPostoDrow;
+	int endXPostoDrow;
+	int endYPostoDrow;
+	char chosenFigure;
 
 public:
 	Board();
@@ -50,11 +57,11 @@ public:
 	void move(std::pair<int,int>, std::pair<int,int>, Board&, bool& );
 	bool checkPlayer(std::pair<int,int>, char [BOARD_SIZE][BOARD_SIZE], bool &);
 
-	int startXPostoDrow;
-	int startYPostoDrow;
-	int endXPostoDrow;
-	int endYPostoDrow;
-	char chosenFigure;
+	int getStartXPostoDrow ();
+	int getStartYPostoDrow ();
+	int getEndXPostoDrow ();
+	int getEndYPostoDrow ();
+	char getChosenFigure ();
 
 };
 

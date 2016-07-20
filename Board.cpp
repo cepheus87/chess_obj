@@ -9,10 +9,18 @@
 
 using namespace std;
 
-Board::Board() {
+Board::Board()
+{
 	fBoardSize = BOARD_SIZE;
 	allocBoardMem();
 	init((char(*)[BOARD_SIZE])fBoard);
+
+	startXPostoDrow = 0;
+	startYPostoDrow = 0;
+	endXPostoDrow = 0;
+	endYPostoDrow = 0;
+	chosenFigure = ' ';
+
 //	cout<<fBoard[0]<<endl;
 //	cout<<fBoard[8*8-1]<<endl;
 }
@@ -28,7 +36,6 @@ int Board::getBoardSize() const{
 
 void Board::init(char board[BOARD_SIZE][BOARD_SIZE])
 {
-
 
     const char figuresRow[BOARD_SIZE] = {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'};
 
@@ -53,6 +60,30 @@ void Board::getBoard(char* boardTable[] )
 	*boardTable = fBoard;
 }
 
+int Board::getStartXPostoDrow()
+{
+	return startXPostoDrow;
+}
+
+int Board::getStartYPostoDrow()
+{
+	 return startYPostoDrow;
+}
+
+int Board::getEndXPostoDrow()
+{
+	return endXPostoDrow;
+}
+
+int Board::getEndYPostoDrow()
+{
+	return endYPostoDrow;
+}
+
+char Board::getChosenFigure()
+{
+	return chosenFigure;
+}
 
 bool Board::checkMove(std::string &positions, Board &boardObj)
 {

@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 					endPosition.insert( 0, command, 2, 2 );
 
 					board.move(startPosition, endPosition, board, player);   //jesli komenda poprawna - wykonaj ruch
-					inter.changeFigurePosition(board.startXPostoDrow, board.startYPostoDrow, board.endXPostoDrow, board.endYPostoDrow, board.chosenFigure);
+					inter.changeFigurePosition(board);
 
 				//moveEngine(getPosition(startPosition), getPosition(endPosition), (char(*)[BOARD_SIZE])b );
 				//Na razie zakomentowane - trzeba dopisac

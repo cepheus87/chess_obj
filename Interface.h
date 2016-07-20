@@ -36,7 +36,7 @@ public:
 	void help();
 	void clearLine(short y);
 	std::string checkCommands(std::string);
-	void changeFigurePosition(int,int,int,int,char);
+	void changeFigurePosition(Board &);
 };
 
 #endif /* INTERFACE_H_ */
