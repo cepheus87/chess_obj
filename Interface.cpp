@@ -32,16 +32,18 @@ Interface::Interface() {
 	}
 
 #endif
-/*
+
 	//void Interface::draw(char board[BOARD_SIZE][BOARD_SIZE],const Interface& inter)
 	void Interface::draw(Board& boardObj)
 	{
 
-		char board[BOARD_SIZE][BOARD_SIZE];
-		boardObj.getBoard(&board);
+		char* tempTable;
+		boardObj.getBoard(&tempTable);
+		char (*board)[BOARD_SIZE] = reinterpret_cast<char (*)[BOARD_SIZE]>(tempTable);
 
-		cout<<"aaa "<<board[0][0]<<endl;
-		cout<<"aaa "<<board[8][8]<<endl;
+
+		//cout<<board[0][0]<<endl;
+		//cout<<board[7][7]<<endl;
 
 		short firstLine = 4;
 
@@ -86,7 +88,7 @@ Interface::Interface() {
 		cout<<endl;
 
 	}
-*/
+
 Interface::~Interface() {
 	// TODO Auto-generated destructor stub
 }

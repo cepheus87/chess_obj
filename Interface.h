@@ -31,7 +31,7 @@ public:
 	Interface();
 	virtual ~Interface();
 	void gotoXY(short,short) const;
-	//void draw(Board&);
+	void draw(Board&);
 	//void draw(char board[][], const Interface& inter);
 };
 

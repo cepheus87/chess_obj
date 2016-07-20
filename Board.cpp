@@ -13,8 +13,8 @@ Board::Board() {
 	fBoardSize = BOARD_SIZE;
 	allocBoardMem();
 	init((char(*)[BOARD_SIZE])fBoard);
-	cout<<fBoard[0]<<endl;
-	cout<<fBoard[8*8-1]<<endl;
+//	cout<<fBoard[0]<<endl;
+//	cout<<fBoard[8*8-1]<<endl;
 }
 
 void Board::allocBoardMem()
@@ -50,8 +50,6 @@ void Board::init(char board[BOARD_SIZE][BOARD_SIZE])
 
 void Board::getBoard(char* boardTable[] )
 {
-	//char tempBoard[BOARD_SIZE][BOARD_SIZE] =
-	 //boardTable = ((char(*)[BOARD_SIZE]) fBoard);
 	*boardTable = fBoard;
 }
 

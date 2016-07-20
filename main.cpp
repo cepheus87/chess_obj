@@ -14,15 +14,8 @@ int main(int argc, char* argv[])
 	Interface inter;
 	Board board;
 
-	char* tempTable;
-	board.getBoard(&tempTable);
 
-
-
-	cout<<tempTable[0]<<endl;
-		cout<<tempTable[8*8-1]<<endl;
-
-	//inter.draw(board);
+	inter.draw(board);
 
 	cin.ignore();
 }
