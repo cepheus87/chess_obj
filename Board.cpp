@@ -10,11 +10,25 @@
 using namespace std;
 
 Board::Board() {
-	// TODO Auto-generated constructor stub
+	fBoardSize = BOARD_SIZE;
+	allocBoardMem();
+	init((char(*)[BOARD_SIZE])fBoard);
+	cout<<fBoard[0]<<endl;
+	cout<<fBoard[8*8-1]<<endl;
+}
+
+void Board::allocBoardMem()
+{
+	fBoard = new char[BOARD_SIZE * BOARD_SIZE];
+}
+
+int Board::getBoardSize() const{
+	return fBoardSize;
 }
 
 void Board::init(char board[BOARD_SIZE][BOARD_SIZE])
 {
+
 
     const char figuresRow[BOARD_SIZE] = {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'};
 
@@ -34,49 +48,11 @@ void Board::init(char board[BOARD_SIZE][BOARD_SIZE])
 
 }
 
-void Board::draw(char board[BOARD_SIZE][BOARD_SIZE],const Interface& inter)
+void Board::getBoard(char* boardTable[] )
 {
-	short firstLine = 4;
-
-    inter.gotoXY(0, firstLine);
-
-    char fieldName = 'A';	//Zmienna uzyta do wypisania rzedu liter, okreslajacych poszczegolne pola szachownicy
-
-
-	cout<< "   ";
-
-	for (int i = 0; i < BOARD_SIZE; i++)
-	{
-		cout << fieldName << " ";
-		fieldName++;
-	}
-	cout << endl << "  ----------------" << endl;
-
-	for (int i = BOARD_SIZE - 1; i >= 0; i--)
-	{
-
-		cout << i+1 << "| ";
-
-		for (unsigned j = 0; j < BOARD_SIZE; j++)
-		{
-
-			cout << board[i][j]<<" ";
-		}
-
-		cout << "|" << i+1 << endl;
-	}
-
-	fieldName = 'A';	//Zmienna uzyta do wypisania rzedu liter, okreslajacych poszczegolne pola szachownicy
-	cout << "  ----------------" << endl;
-	cout<< "   ";
-
-	for (int i = 0; i < BOARD_SIZE; i++)
-	{
-		cout << fieldName << " ";
-		fieldName++;
-	}
-
-	cout<<endl;
+	//char tempBoard[BOARD_SIZE][BOARD_SIZE] =
+	 //boardTable = ((char(*)[BOARD_SIZE]) fBoard);
+	*boardTable = fBoard;
 }
 
 

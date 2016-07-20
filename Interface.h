@@ -18,6 +18,8 @@
 #include <cctype>
 #include <iomanip>
 
+#include "Board.h"
+
 #ifdef _WIN32
     #include <windows.h>
 #endif
@@ -29,6 +31,8 @@ public:
 	Interface();
 	virtual ~Interface();
 	void gotoXY(short,short) const;
+	//void draw(Board&);
+	//void draw(char board[][], const Interface& inter);
 };
 
 #endif /* INTERFACE_H_ */
