@@ -363,6 +363,32 @@ bool Board::isEmpty(std::pair<int,int> endPos, char board[BOARD_SIZE][BOARD_SIZE
   else return false;
 }
 
+bool Board::isEmpty(std::pair<int,int> endPos )
+{
+
+	char* tempTable;
+	getBoard(&tempTable);
+	char (*board)[BOARD_SIZE] = reinterpret_cast<char (*)[BOARD_SIZE]>(tempTable);
+  if( board[endPos.first][endPos.second] == '.') return true;
+  else return false;
+}
+
+char Board::getChessPiece(std::pair<int,int> startPosPair){
+
+	char* tempTable;
+	getBoard(&tempTable);
+	char (*board)[BOARD_SIZE] = reinterpret_cast<char (*)[BOARD_SIZE]>(tempTable);
+
+	return board[startPosPair.first][startPosPair.second];
+}
+
+
+char Board::getChessPiece(std::string startPos){
+
+	pair<int,int> startPosPair = getPosition(startPos);
+	return getChessPiece(startPosPair);
+}
+
 Board::~Board()
 {
 	delete [] fBoard;

@@ -65,17 +65,29 @@ int main(int argc, char* argv[])
 
 				if(moveCorrectness){
 
+
 					string startPosition = "";
 					string endPosition = "";
 
 					startPosition.insert( 0, command, 0, 2 );
 					endPosition.insert( 0, command, 2, 2 );
 
-					board.move(startPosition, endPosition, board, player);   //jesli komenda poprawna - wykonaj ruch
-					inter.changeFigurePosition(board);
+					Figure chessPiece(board.getChessPiece(startPosition));
 
-				//moveEngine(getPosition(startPosition), getPosition(endPosition), (char(*)[BOARD_SIZE])b );
-				//Na razie zakomentowane - trzeba dopisac
+					pair<int,int> startPos = board.getPosition(startPosition);
+					pair<int,int> endPos = board.getPosition(endPosition);
+
+					if(chessPiece.isYour(endPos, board) )
+					{
+						bool chessPieceMoveCorrectness = chessPiece.move(startPos, endPos, board);
+
+						if(chessPieceMoveCorrectness){
+
+							board.move(startPosition, endPosition, board, player);   //jesli komenda poprawna - wykonaj ruch
+							inter.changeFigurePosition(board);
+						}
+					}
+
 				} else {
 				//jesli komenda nie poprawna
 				inter.gotoXY(0,19);
@@ -90,5 +102,5 @@ int main(int argc, char* argv[])
 			}
 	}while(exit != 't');
 
-	cin.ignore();
+
 }
