@@ -31,8 +31,12 @@ public:
 	Interface();
 	virtual ~Interface();
 	void gotoXY(short,short) const;
-	void draw(Board&);
-	//void draw(char board[][], const Interface& inter);
+	void draw(Board &);
+	void menu();
+	void help();
+	void clearLine(short y);
+	std::string checkCommands(std::string);
+	void changeFigurePosition(int,int,int,int,char);
 };
 
 #endif /* INTERFACE_H_ */

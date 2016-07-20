@@ -54,10 +54,15 @@ void Board::getBoard(char* boardTable[] )
 }
 
 
-std::pair<bool, std::string> Board::checkMove(std::string positions, char board[BOARD_SIZE][BOARD_SIZE])
+bool Board::checkMove(std::string &positions, Board &boardObj)
 {
+
+	char* tempTable;
+	boardObj.getBoard(&tempTable);
+	char (*board)[BOARD_SIZE] = reinterpret_cast<char (*)[BOARD_SIZE]>(tempTable);
+
 	string quantityOfCharacters="";
-	pair<bool, string> moveCorrectness(true, "");
+	bool moveCorrectness = true;
 
 	for(size_t i = 0; i < positions.length(); i++ )
 	{
@@ -74,22 +79,23 @@ std::pair<bool, std::string> Board::checkMove(std::string positions, char board[
 		cout << "quantityOfCharacters: "<<quantityOfCharacters<<endl;
 	#endif
 
-	if(quantityOfCharacters.length()!=4){
+	if(quantityOfCharacters.length()!=4)
+	{
 
 		if(quantityOfCharacters.length()==3||quantityOfCharacters.length()==2)
-		            {
-		            cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" znaki typu litera lub cyfra, powinny byc 4!";
-		            }else if (quantityOfCharacters.length()==0)
-		            {
-		            cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" liter i cyfr, powinny byc 4!";
-		            }else if (quantityOfCharacters.length()==1)
-		            {
-		            cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" litere lub cyfre, powinny byc 4!";
-		            } else{
-		            cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" znakow typu litera lub cyfra, powinny byc tylko 4!";
-		            }
+			{
+			cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" znaki typu litera lub cyfra, powinny byc 4!";
+			}else if (quantityOfCharacters.length()==0)
+			{
+			cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" liter i cyfr, powinny byc 4!";
+			}else if (quantityOfCharacters.length()==1)
+			{
+			cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" litere lub cyfre, powinny byc 4!";
+			} else{
+			cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" znakow typu litera lub cyfra, powinny byc tylko 4!";
+			}
 
-		moveCorrectness.first= false;
+		moveCorrectness = false;
 		return moveCorrectness;
 	}
 
@@ -113,7 +119,7 @@ std::pair<bool, std::string> Board::checkMove(std::string positions, char board[
 			}else{
 
 				cout<<"Znak "<<i+1<<" powinien byc litera a jest cyfra!"<<endl;
-				moveCorrectness.first= false;
+				moveCorrectness = false;
 
 			}
 		}
@@ -137,17 +143,17 @@ std::pair<bool, std::string> Board::checkMove(std::string positions, char board[
 		if (isEmpty(startPos, board))
 		{
 	    cout<<"To pole jest puste."<<endl;
-	    moveCorrectness.first= false;
+	    moveCorrectness = false;
 	    return moveCorrectness;
 		}
 
 	if (checkChar == false)
 	{
-		moveCorrectness.first= false;
+		moveCorrectness = false;
 		return moveCorrectness;
 	}
 
-	moveCorrectness.second=quantityOfCharacters;
+	positions = quantityOfCharacters;
 	return moveCorrectness;
 }
 
@@ -227,13 +233,108 @@ std::pair<int,int> Board::getPosition(std::string pos)
 		return posPair;
 }
 
+void Board::move(std::pair<int,int> startPos, std::pair<int,int> endPos, Board &boardObj, bool &player )
+{
+
+	char* tempTable;
+	boardObj.getBoard(&tempTable);
+	char (*board)[BOARD_SIZE] = reinterpret_cast<char (*)[BOARD_SIZE]>(tempTable);
+
+	#ifdef DEBUG
+		cout<<startPos.first<<" "<<startPos.second<<endl;
+		cout<<endPos.first<<" "<<endPos.second<<endl;
+		cout<< board[startPos.first][startPos.second]<<endl;
+		cout<<board[endPos.first][endPos.second]<<endl;
+	#endif
+
+	bool copyPlayer = player;
+
+	if(checkPlayer(startPos,board,player)&&(isAllowed(endPos,board,copyPlayer)))
+	{
+		player = !player;
+
+		board[endPos.first][endPos.second] = board[startPos.first][startPos.second];
+		board[startPos.first][startPos.second] = '.';
+
+		chosenFigure = board[endPos.first][endPos.second];
+
+		unsigned int quantityLeftSpace = 3;
+		unsigned int lastBoardLine = 13;
+
+		startXPostoDrow = quantityLeftSpace + startPos.second * 2;
+		startYPostoDrow = lastBoardLine - startPos.first;
+
+		#ifdef DEBUG
+			cout<<"sX: "<<startXPostoDrow;
+			cout<<"sY: "<<startYPostoDrow;
+		#endif
+
+		endXPostoDrow = quantityLeftSpace + endPos.second * 2;
+		endYPostoDrow = lastBoardLine - endPos.first;
+
+		#ifdef DEBUG
+			cout<<"eX: "<<endXPostoDrow;
+			cout<<"eY: "<<endYPostoDrow;
+		#endif
+
+		//changeFigurePopsition();
+		//cout<<"Pionek z pozycji: "<<start<<", zostal przeniesiony na pole: "<<end<<endl;
+	}
+}
+
+bool Board::checkPlayer(std::pair<int,int> startPos, char board[BOARD_SIZE][BOARD_SIZE], bool& player)
+{
+
+	if (player)
+	{
+		if( (board[startPos.first][startPos.second] >= 'A') && (board[startPos.first][startPos.second] <= 'Z') )
+		{
+
+			return true;
+
+		}
+		else
+		{
+
+			cout << "Nie twoja figura"<<endl;
+			return false;
+
+		}
+
+	}else{
+
+		if( (board[startPos.first][startPos.second] >= 'a') && (board[startPos.first][startPos.second] <= 'z') )
+		{
+			return true;
+
+		}
+		else
+		{
+
+			cout << "Nie twoja figura"<<endl;
+			return false;
+
+		}
+	}
+}
+
+
+void Board::move(std::string start, std::string end, Board& boardObj, bool &player )
+{
+  	pair<int,int> startPos = getPosition(start);
+  	pair<int,int> endPos = getPosition(end);
+  	move(startPos, endPos, boardObj, player);
+}
+
 bool Board::isEmpty(std::pair<int,int> endPos, char board[BOARD_SIZE][BOARD_SIZE] )
 {
   if( board[endPos.first][endPos.second] == '.') return true;
   else return false;
 }
 
-Board::~Board() {
-	// TODO Auto-generated destructor stub
+Board::~Board()
+{
+	delete [] fBoard;
+
 }
 

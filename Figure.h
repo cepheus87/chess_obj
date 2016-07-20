@@ -8,7 +8,9 @@
 #ifndef FIGURE_H_
 #define FIGURE_H_
 
-class Figure {
+class Figure
+{
+
 public:
 	virtual ~Figure();
 	Figure();
