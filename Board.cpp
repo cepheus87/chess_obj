@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Board::Board()
+Board::Board(bool compPlayer)
 {
 	fBoardSize = BOARD_SIZE;
 	allocBoardMem();
@@ -20,6 +20,7 @@ Board::Board()
 	endXPostoDrow = 0;
 	endYPostoDrow = 0;
 	chosenFigure = ' ';
+	computerPlayer = compPlayer;
 
 //	cout<<fBoard[0]<<endl;
 //	cout<<fBoard[8*8-1]<<endl;
@@ -61,6 +62,11 @@ void Board::getBoard(char* boardTable[] )
 	*boardTable = fBoard;
 }
 
+void Board::changeComputerPlayer()
+{
+	computerPlayer = !computerPlayer;
+}
+
 int Board::getStartXPostoDrow()
 {
 	return startXPostoDrow;
@@ -86,6 +92,10 @@ char Board::getChosenFigure()
 	return chosenFigure;
 }
 
+bool Board::getComputerPlayer()
+{
+	return computerPlayer;
+}
 bool Board::checkMove(std::string &positions, Board &boardObj)
 {
 
@@ -113,19 +123,21 @@ bool Board::checkMove(std::string &positions, Board &boardObj)
 
 	if(quantityOfCharacters.length()!=4)
 	{
-
-		if(quantityOfCharacters.length()==3||quantityOfCharacters.length()==2)
-			{
-			cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" znaki typu litera lub cyfra, powinny byc 4!";
-			}else if (quantityOfCharacters.length()==0)
-			{
-			cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" liter i cyfr, powinny byc 4!";
-			}else if (quantityOfCharacters.length()==1)
-			{
-			cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" litere lub cyfre, powinny byc 4!";
-			} else{
-			cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" znakow typu litera lub cyfra, powinny byc tylko 4!";
-			}
+		if(getComputerPlayer())
+		{
+			if(quantityOfCharacters.length()==3||quantityOfCharacters.length()==2)
+				{
+				cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" znaki typu litera lub cyfra, powinny byc 4!";
+				}else if (quantityOfCharacters.length()==0)
+				{
+				cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" liter i cyfr, powinny byc 4!";
+				}else if (quantityOfCharacters.length()==1)
+				{
+				cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" litere lub cyfre, powinny byc 4!";
+				} else{
+				cout<<"Wprowadziles " <<quantityOfCharacters.length()<<" znakow typu litera lub cyfra, powinny byc tylko 4!";
+				}
+		}
 
 		moveCorrectness = false;
 		return moveCorrectness;
@@ -144,13 +156,14 @@ bool Board::checkMove(std::string &positions, Board &boardObj)
 
 				if(!((castedChar >= 'A' && castedChar <='A'+BOARD_SIZE)||(castedChar >= 'a' && castedChar <= 'a'+BOARD_SIZE))) // 65 == A
 				{
-					cout << "Litera na pozycji " << i+1 << " powinna byc z zakresu A-H lub a-h!" << endl;
+					if(getComputerPlayer())
+						cout << "Litera na pozycji " << i+1 << " powinna byc z zakresu A-H lub a-h!" << endl;
 					checkChar = false;
 				}
 
 			}else{
-
-				cout<<"Znak "<<i+1<<" powinien byc litera a jest cyfra!"<<endl;
+				if(getComputerPlayer())
+					cout<<"Znak "<<i+1<<" powinien byc litera a jest cyfra!"<<endl;
 				moveCorrectness = false;
 
 			}
@@ -160,8 +173,8 @@ bool Board::checkMove(std::string &positions, Board &boardObj)
 
 			if ( ( atoi(&quantityOfCharacters[i] ) < 1 )||( atoi(&quantityOfCharacters[i])>8 ) )
 			{
-
-				cout << "Liczba na pozycji " << i+1 << " powinna byc z zakresu 1-8!" << endl;
+				if(getComputerPlayer())
+					cout << "Liczba na pozycji " << i+1 << " powinna byc z zakresu 1-8!" << endl;
 				checkChar = false;
 
 			}
@@ -174,7 +187,8 @@ bool Board::checkMove(std::string &positions, Board &boardObj)
 
 		if (isEmpty(startPos, board))
 		{
-	    cout<<"To pole jest puste."<<endl;
+		if(getComputerPlayer())
+			cout<<"To pole jest puste."<<endl;
 	    moveCorrectness = false;
 	    return moveCorrectness;
 		}
@@ -284,6 +298,7 @@ void Board::move(std::pair<int,int> startPos, std::pair<int,int> endPos, Board &
 	if(checkPlayer(startPos,board,player)&&(isAllowed(endPos,board,copyPlayer)))
 	{
 		player = !player;
+		changeComputerPlayer();
 
 		board[endPos.first][endPos.second] = board[startPos.first][startPos.second];
 		board[startPos.first][startPos.second] = '.';

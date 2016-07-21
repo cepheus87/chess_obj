@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 	#endif
 
 	Interface inter;
-	Board board;
+	Board board(true);		//player = false; computerPlayer = true
 
 	inter.draw(board);
 
@@ -39,7 +39,12 @@ int main(int argc, char* argv[])
 			}
 			else
 			{
-				msg_Command = "CZARNY: Prosze podac polecenie lub pole pionka i pole docelowe ruchu: ";
+				if(board.getComputerPlayer()){
+					msg_Command = "CZARNY: Prosze podac polecenie lub pole pionka i pole docelowe ruchu: ";
+				}else{
+					msg_Command = "KOMPUTER: Czekaj... ";
+				}
+
 			}
 
 		inter.gotoXY(0,17);
@@ -91,7 +96,8 @@ int main(int argc, char* argv[])
 				} else {
 				//jesli komenda nie poprawna
 				inter.gotoXY(0,19);
-				cout<<"Ruch nie zostanie wykonany. Podaj jeszcze raz potrzebne pola!"<<endl;
+				if(board.getComputerPlayer())
+					cout<<"Ruch nie zostanie wykonany. Podaj jeszcze raz potrzebne pola!"<<endl;
 				}
 
 				inter.gotoXY(0,20);
