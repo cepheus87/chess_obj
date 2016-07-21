@@ -167,31 +167,34 @@ bool Figure::movePawn(std::pair<int,int> startPos, std::pair<int,int> endPos, Bo
 
 	if (startPos.second == endPos.second)
 	{
+		//cout<<startPos.second<<" ; "<<endPos.second<<endl;
 		if (board[endPos.first][endPos.second] != '.')
 		{
 			//if(boardObj.getComputerPlayer())
 				cout<<"Droga ruchu w pionie nie jest pusta."<<endl;
 			return false;
 		}
-		if (endPos.first - startPos.first == 2)
+		if (abs(endPos.first - startPos.first) == 2)
 		{
-			if ((player && startPos.first != 1) || (!player && startPos.first != 7 ))
+			if ((player && startPos.first != 1) || (!player && startPos.first != 6 ))
 			{
 				//if(boardObj.getComputerPlayer())
 					cout<<"Ruch z o dwa pola mozliwy tylko z wyjsciowej pozycji."<<endl;
 			return false;
+
+			if (board[(endPos.first + startPos.first) / 2][endPos.second] != '.')
+			{
+				//if(boardObj.getComputerPlayer())
+					cout<<"To nie jest poprawny ruch pionka. Brak wolnej drogi."<<endl;
+				return false;
 			}
-		}
-		else if (endPos.first - startPos.first > 1){
+
+			}
+		}else if ((abs(endPos.first - startPos.first)) > 1){
 			//if(boardObj.getComputerPlayer())
 				cout<<"To nie jest poprawny ruch pionka. Wykonaj ruch o jedno pole."<<endl;
 			return false;
-		}
-		else if (board[(endPos.first + startPos.first) / 2][endPos.second] != '.')
-		{
-			//if(boardObj.getComputerPlayer())
-				cout<<"To nie jest poprawny ruch pionka. Brak wolnej drogi."<<endl;
-			return false;
+
 		}
 
 	}else
