@@ -16,15 +16,18 @@ private:
 
 	char fChessPiece;
 	bool fWhite;
+	bool player;
+
 public:
 	virtual ~Figure();
-	Figure(char);
+	Figure(char, bool);
 	inline bool isWhite(char);
 	bool move(std::pair<int,int> , std::pair<int,int>, Board& );
-	bool isYour(std::pair<int,int> endPos, Board& board );
+	bool isYour(std::pair<int,int>, Board& );
 
 	bool moveKing(std::pair<int,int>, std::pair<int,int>, Board& );
-	bool moveRook(std::pair<int,int> startPos, std::pair<int,int> endPos, Board& board );
+	bool moveRook(std::pair<int,int>, std::pair<int,int>, Board& );
+	bool movePawn(std::pair<int,int>, std::pair<int,int>, Board& );
 
 };
 

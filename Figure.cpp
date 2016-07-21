@@ -14,9 +14,10 @@ Figure::~Figure() {
 	// TODO Auto-generated destructor stub
 }
 
-Figure::Figure(char chessPiece) {
+Figure::Figure(char chessPiece, bool mPlayer) {
 	fChessPiece = chessPiece;
 	fWhite = isWhite(chessPiece);
+	player = mPlayer;
 }
 
 inline bool Figure::isWhite(char chessPiece)
@@ -36,7 +37,8 @@ bool Figure::move(std::pair<int,int> startPos, std::pair<int,int> endPos, Board&
 
 	  case 'p':
 	  case 'P':
-//	    returnStatement = movePawn();
+
+		returnStatement = movePawn(startPos, endPos, boardObj);
 	    break;
 
 	  case 'r':
@@ -146,5 +148,60 @@ bool Figure::moveRook(std::pair<int,int> startPos, std::pair<int,int> endPos, Bo
 		}
 	}
 
+	return true;
+}
+
+bool Figure::movePawn(std::pair<int,int> startPos, std::pair<int,int> endPos, Board& boardObj )
+{
+
+	char* tempTable;
+	boardObj.getBoard(&tempTable);
+	char (*board)[BOARD_SIZE] = reinterpret_cast<char (*)[BOARD_SIZE]>(tempTable);
+
+	if (startPos.second == endPos.second)
+	{
+		if (board[endPos.first][endPos.second] != '.')
+		{
+			cout<<"Droga ruchu w pionie nie jest pusta."<<endl;
+			return false;
+		}
+		if (endPos.first - startPos.first == 2)
+		{
+			if ((player && startPos.first != 1) || (!player && startPos.first != 7 ))
+			{
+			cout<<"Ruch z o dwa pola mozliwy tylko z wyjsciowej pozycji."<<endl;
+			return false;
+			}
+		}
+		else if (endPos.first - startPos.first > 1){
+
+			cout<<"To nie jest poprawny ruch pionka. Wykonaj ruch o jedno pole."<<endl;
+			return false;
+		}
+		else if (board[(endPos.first + startPos.first) / 2][endPos.second] != '.')
+		{
+			cout<<"To nie jest poprawny ruch pionka. Brak wolnej drogi."<<endl;
+			return false;
+		}
+
+	}else
+	{
+		if ((abs(startPos.second - endPos.second) > 1))
+		{
+			cout<<"To nie jest poprawny ruch pionka. Pionek rusza sie do przodu."<<endl;
+			return false;
+		}
+		else if (board[endPos.first][endPos.second] == '.')
+		{
+			cout<<"To nie jest poprawny ruch pionka. Brak bicia."<<endl;
+			return false;
+		}
+//		else if (player == isWhite(board[move.to.Y][move.to.X]))
+//		{
+//				cout<<"Zly rouch";
+//				return false;
+//		}
+
+	}
 	return true;
 }

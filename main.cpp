@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 {
 
 	#ifndef _WIN32
-	system("clear");
+		system("clear");
 	#endif
 
 	Interface inter;
@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 					startPosition.insert( 0, command, 0, 2 );
 					endPosition.insert( 0, command, 2, 2 );
 
-					Figure chessPiece(board.getChessPiece(startPosition));
+					Figure chessPiece(board.getChessPiece(startPosition),player);
 
 					pair<int,int> startPos = board.getPosition(startPosition);
 					pair<int,int> endPos = board.getPosition(endPosition);
