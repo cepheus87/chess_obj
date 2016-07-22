@@ -34,7 +34,9 @@ public:
 	void draw(Board &);
 	void menu();
 	void help();
+	void gameType(Board&);
 	void clearLine(short y);
+	void clearScreen();
 	std::string checkCommands(std::string);
 	void changeFigurePosition(Board &);
 };

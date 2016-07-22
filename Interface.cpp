@@ -168,6 +168,64 @@ void Interface::clearLine(short y)
 	gotoXY(0, y);
 }
 
+void Interface::clearScreen()
+{
+	#ifdef _WIN32
+    	system("cls");
+	#else
+    	system("clear");
+	#endif
+}
+
+void Interface::gameType(Board& board) {
+
+	string type="";
+	string wrongType ="Nie ma takiego trybu! Podaj jeszcze raz.";
+
+	cout << "Witaj w programie szachowym!" << endl;;
+	cout << "a) Gra z komputerem." << endl;
+	cout << "b) Gra dla dwoch graczy." << endl;
+	cout << "c) Gra na dwa terminale." << endl;
+	cout << "Wybierz tryb gry: ";
+	cin >> type;
+	while (1) {
+
+		string checkedGameType = checkCommands(type);
+
+		if (checkedGameType=="a") { //computerPlayer ma byc true
+			if(!board.getComputerPlayer()) {
+				board.changeComputerPlayer();
+			}
+			getchar();
+			clearScreen();
+			break;
+		}
+		if (checkedGameType=="b") { //computerPlayer ma byc false
+			if(board.getComputerPlayer()) {
+				board.changeComputerPlayer();
+				board.changeTwoPlayers();
+			}
+			getchar();
+			clearScreen();
+			break;
+		}
+		if (checkedGameType=="c") {
+			if(board.getComputerPlayer()) {
+				board.changeComputerPlayer();
+				board.changeTwoPlayers();
+			}
+			getchar();
+			clearScreen();
+			break;
+		}
+		cout << wrongType << endl;
+		gotoXY(18,4);
+		cout << setw(40) << " ";
+		gotoXY(18,4);
+		cin >> type;
+		clearLine(5);
+	}
+}
 
 Interface::~Interface() {
 	// TODO Auto-generated destructor stub

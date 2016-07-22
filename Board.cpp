@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Board::Board(bool compPlayer)
+Board::Board(bool compPlayer, bool twPlayers)
 {
 	fBoardSize = BOARD_SIZE;
 	allocBoardMem();
@@ -21,6 +21,7 @@ Board::Board(bool compPlayer)
 	endYPostoDrow = 0;
 	chosenFigure = ' ';
 	computerPlayer = compPlayer;
+	twoPlayers = twPlayers;
 
 //	cout<<fBoard[0]<<endl;
 //	cout<<fBoard[8*8-1]<<endl;
@@ -38,8 +39,8 @@ int Board::getBoardSize() const{
 void Board::init(char board[BOARD_SIZE][BOARD_SIZE])
 {
 
-    //const char figuresRow[BOARD_SIZE] = {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'};
-	const char figuresRow[BOARD_SIZE] = {'R', '.', 'B', '.', 'K', 'B', 'N', 'R'};
+    const char figuresRow[BOARD_SIZE] = {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'};
+	//const char figuresRow[BOARD_SIZE] = {'R', '.', 'B', '.', 'K', 'B', 'N', 'R'};
 
 	memset(board, '.', sizeof(char) * BOARD_SIZE * BOARD_SIZE);
 
@@ -65,6 +66,11 @@ void Board::getBoard(char* boardTable[] )
 void Board::changeComputerPlayer()
 {
 	computerPlayer = !computerPlayer;
+}
+
+void Board::changeTwoPlayers()
+{
+	twoPlayers = !twoPlayers;
 }
 
 int Board::getStartXPostoDrow()
@@ -96,6 +102,12 @@ bool Board::getComputerPlayer()
 {
 	return computerPlayer;
 }
+
+bool Board::getTwoPlayers()
+{
+	return twoPlayers;
+}
+
 bool Board::checkMove(std::string &positions, Board &boardObj)
 {
 
@@ -123,7 +135,7 @@ bool Board::checkMove(std::string &positions, Board &boardObj)
 
 	if(quantityOfCharacters.length()!=4)
 	{
-		if(getComputerPlayer())
+		if( getComputerPlayer() || getTwoPlayers() )
 		{
 			if(quantityOfCharacters.length()==3||quantityOfCharacters.length()==2)
 				{
@@ -151,35 +163,28 @@ bool Board::checkMove(std::string &positions, Board &boardObj)
 		{
 			if ( (atoi(&quantityOfCharacters[i])) == 0)
 			{
-
 				char castedChar = quantityOfCharacters[i];
-
 				if(!((castedChar >= 'A' && castedChar <='A'+BOARD_SIZE)||(castedChar >= 'a' && castedChar <= 'a'+BOARD_SIZE))) // 65 == A
 				{
-					if(getComputerPlayer())
+					if( getComputerPlayer() || getTwoPlayers() )
 						cout << "Litera na pozycji " << i+1 << " powinna byc z zakresu A-H lub a-h!" << endl;
 					checkChar = false;
 				}
 
 			}else{
-				if(getComputerPlayer())
+				if( getComputerPlayer() || getTwoPlayers() )
 					cout<<"Znak "<<i+1<<" powinien byc litera a jest cyfra!"<<endl;
 				moveCorrectness = false;
-
 			}
-		}
-		else
-		{
 
+		}else{
 			if ( ( atoi(&quantityOfCharacters[i] ) < 1 )||( atoi(&quantityOfCharacters[i])>8 ) )
 			{
-				if(getComputerPlayer())
+				if( getComputerPlayer() || getTwoPlayers() )
 					cout << "Liczba na pozycji " << i+1 << " powinna byc z zakresu 1-8!" << endl;
 				checkChar = false;
-
 			}
 		}
-
 	}
 
 	std::string startPosition = quantityOfCharacters.substr(0,2);
@@ -187,7 +192,7 @@ bool Board::checkMove(std::string &positions, Board &boardObj)
 
 		if (isEmpty(startPos, board))
 		{
-		if(getComputerPlayer())
+		if( getComputerPlayer() || getTwoPlayers() )
 			cout<<"To pole jest puste."<<endl;
 	    moveCorrectness = false;
 	    return moveCorrectness;

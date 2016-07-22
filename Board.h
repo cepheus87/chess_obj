@@ -48,9 +48,10 @@ private:
 	char chosenFigure;
 
 	bool computerPlayer;
+	bool twoPlayers;
 
 public:
-	Board(bool);
+	Board(bool, bool);
 	virtual ~Board();
 	void getBoard( char* []);
 	int getBoardSize() const;
@@ -66,8 +67,10 @@ public:
 	int getEndYPostoDrow ();
 	char getChosenFigure ();
 	bool getComputerPlayer();
+	bool getTwoPlayers();
 
 	void changeComputerPlayer();
+	void changeTwoPlayers();
 
 	char getChessPiece(std::string );
 	char getChessPiece(std::pair<int,int>);

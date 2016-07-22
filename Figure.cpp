@@ -68,7 +68,7 @@ bool Figure::move(std::pair<int,int> startPos, std::pair<int,int> endPos, Board&
 	    break;
 
 	  default :
-		  if(boardObj.getComputerPlayer())
+		  if( boardObj.getComputerPlayer() || boardObj.getTwoPlayers() )
 			  cout<<"Pole startowe jest puste"<<endl;
 		  returnStatement = false;
 	    break;
@@ -84,7 +84,7 @@ bool Figure::isYour(std::pair<int,int> endPos, Board& board )
 	{	//Figure fig(board.getChessPiece(endPos));
 		if(fWhite == isWhite(board.getChessPiece(endPos)) )
 		{
-			if(board.getComputerPlayer())
+			if( board.getComputerPlayer() || board.getTwoPlayers() )
 				cout<<"Nie mozesz poruszyc sie na swoje pole";
 			return false;
 		}
@@ -102,7 +102,7 @@ bool Figure::moveKing(std::pair<int,int> startPos, std::pair<int,int> endPos, Bo
     return true;
   }
   else{
-	  if(board.getComputerPlayer())
+	  if( board.getComputerPlayer() || board.getTwoPlayers() )
 		  cout<<"To nie jest dozwolony ruch krolem"<<endl;
     return false;
   }
@@ -119,7 +119,7 @@ bool Figure::moveRook(std::pair<int,int> startPos, std::pair<int,int> endPos, Bo
 
 	if( !( (startPos.first == endPos.first) || (startPos.second == endPos.second) ) )
 	{
-		if(boardObj.getComputerPlayer())
+		if( boardObj.getComputerPlayer() || boardObj.getTwoPlayers() )
 			cout<<"To nie jest poprawny ruch wieza"<<endl;
 		return false;
 	}
@@ -131,7 +131,7 @@ bool Figure::moveRook(std::pair<int,int> startPos, std::pair<int,int> endPos, Bo
 		{
 			if (board[y][startPos.second] != '.')
 			{
-				if(boardObj.getComputerPlayer())
+				if( boardObj.getComputerPlayer() || boardObj.getTwoPlayers() )
 					cout<<"Droga ruchu w pionie nie jest pusta"<<endl;
 				return false;
 			}
@@ -147,7 +147,7 @@ bool Figure::moveRook(std::pair<int,int> startPos, std::pair<int,int> endPos, Bo
 		{
 			if (board[startPos.first][x] != '.')
 			{
-				if(boardObj.getComputerPlayer())
+				if( boardObj.getComputerPlayer() || boardObj.getTwoPlayers() )
 					cout<<"Droga ruchu w poziomie nie jest pusta"<<endl;
 				return false;
 			}
@@ -170,7 +170,7 @@ bool Figure::movePawn(std::pair<int,int> startPos, std::pair<int,int> endPos, Bo
 		//cout<<startPos.second<<" ; "<<endPos.second<<endl;
 		if (board[endPos.first][endPos.second] != '.')
 		{
-			//if(boardObj.getComputerPlayer())
+			if( boardObj.getComputerPlayer() || boardObj.getTwoPlayers() )
 				cout<<"Droga ruchu w pionie nie jest pusta."<<endl;
 			return false;
 		}
@@ -178,20 +178,20 @@ bool Figure::movePawn(std::pair<int,int> startPos, std::pair<int,int> endPos, Bo
 		{
 			if ((player && startPos.first != 1) || (!player && startPos.first != 6 ))
 			{
-				//if(boardObj.getComputerPlayer())
+				if( boardObj.getComputerPlayer() || boardObj.getTwoPlayers() )
 					cout<<"Ruch z o dwa pola mozliwy tylko z wyjsciowej pozycji."<<endl;
 			return false;
 
 			if (board[(endPos.first + startPos.first) / 2][endPos.second] != '.')
 			{
-				//if(boardObj.getComputerPlayer())
+				if( boardObj.getComputerPlayer() || boardObj.getTwoPlayers() )
 					cout<<"To nie jest poprawny ruch pionka. Brak wolnej drogi."<<endl;
 				return false;
 			}
 
 			}
 		}else if ((abs(endPos.first - startPos.first)) > 1){
-			//if(boardObj.getComputerPlayer())
+			if( boardObj.getComputerPlayer() || boardObj.getTwoPlayers() )
 				cout<<"To nie jest poprawny ruch pionka. Wykonaj ruch o jedno pole."<<endl;
 			return false;
 
@@ -201,13 +201,13 @@ bool Figure::movePawn(std::pair<int,int> startPos, std::pair<int,int> endPos, Bo
 	{
 		if ((abs(startPos.second - endPos.second) > 1))
 		{
-			//if(boardObj.getComputerPlayer())
+			if( boardObj.getComputerPlayer() || boardObj.getTwoPlayers() )
 				cout<<"To nie jest poprawny ruch pionka. Pionek rusza sie do przodu."<<endl;
 			return false;
 		}
 		else if (board[endPos.first][endPos.second] == '.')
 		{
-			//if(boardObj.getComputerPlayer())
+			if( boardObj.getComputerPlayer() || boardObj.getTwoPlayers() )
 				cout<<"To nie jest poprawny ruch pionka. Brak bicia."<<endl;
 			return false;
 		}
@@ -221,7 +221,7 @@ bool Figure::moveKnight (std::pair<int,int> startPos, std::pair<int,int> endPos,
 
 	if ((abs(endPos.second - startPos.second) != 2 || abs(endPos.first - startPos.first) != 1) && (abs(endPos.first - startPos.first) != 2 || abs(endPos.second - startPos.second) != 1))
 	{
-		if(boardObj.getComputerPlayer())
+		if( boardObj.getComputerPlayer() || boardObj.getTwoPlayers() )
 			cout<<"Niepoprawny ruch skoczkiem.";
 		return false;
 	}else
@@ -235,7 +235,7 @@ bool Figure::moveBishop(std::pair<int,int> startPos, std::pair<int,int> endPos, 
 	char (*board)[BOARD_SIZE] = reinterpret_cast<char (*)[BOARD_SIZE]>(tempTable);
 
 	if( abs(endPos.first - startPos.first) != abs(endPos.second - startPos.second) ) {
-		if(boardObj.getComputerPlayer())
+		if( boardObj.getComputerPlayer() || boardObj.getTwoPlayers() )
 			cout << "To nie jest poprawny ruch dla gonca!" << endl;
 		return false;
 	}
@@ -247,7 +247,7 @@ bool Figure::moveBishop(std::pair<int,int> startPos, std::pair<int,int> endPos, 
 
 		while(! (x == endPos.first) ) {
 			if (board[x][y] != '.') {
-				if(boardObj.getComputerPlayer())
+				if( boardObj.getComputerPlayer() || boardObj.getTwoPlayers() )
 					cout << "Droga ruchu figury nie jest pusta!" << endl;
 				return false;
 			}
@@ -264,7 +264,7 @@ bool Figure::moveQueen(std::pair<int,int> startPos, std::pair<int,int> endPos, B
 		return true;
 	}
 	else {
-		if(boardObj.getComputerPlayer())
+		if( boardObj.getComputerPlayer() || boardObj.getTwoPlayers() )
 			cout << "To nie jest poprawny ruch krolowej!" << endl;
 		return false;
 	}

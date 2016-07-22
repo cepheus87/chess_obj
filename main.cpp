@@ -12,12 +12,12 @@ int main(int argc, char* argv[])
 	#endif
 
 	Interface inter;
-	Board board(true);		//player = false; computerPlayer = true
-
-	inter.draw(board);
-
+	Board board(true, false);		//Pierwsza zmienna(opcja gry z komputerem: player = false; computerPlayer = true) druga zmienna: gra dla dwoch graczy: (false - gra dla dwoch graczy, true - gra z komputerem).
 	bool player = true;				// du¿e pionki
 
+	inter.gameType(board);
+
+	inter.draw(board);
 	inter.menu();     //wypisanie instrukcji
 
 	string startPosition;
@@ -39,7 +39,8 @@ int main(int argc, char* argv[])
 			}
 			else
 			{
-				if(board.getComputerPlayer()){
+
+				if( board.getComputerPlayer() || board.getTwoPlayers() ){
 					msg_Command = "CZARNY: Prosze podac polecenie lub pole pionka i pole docelowe ruchu: ";
 				}else{
 					msg_Command = "KOMPUTER: Czekaj... ";
