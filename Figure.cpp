@@ -54,12 +54,12 @@ bool Figure::move(std::pair<int,int> startPos, std::pair<int,int> endPos, Board&
 
 	  case 'b':
 	  case 'B':
-	    //returnStatement = moveBishop();
+	    returnStatement = moveBishop(startPos, endPos, boardObj);
 	    break;
 
 	  case 'q':
 	  case 'Q':
-	    //returnStatement = moveQueen();
+	    returnStatement = moveQueen(startPos, endPos, boardObj);
 	    break;
 
 	  case 'k':
@@ -227,3 +227,48 @@ bool Figure::moveKnight (std::pair<int,int> startPos, std::pair<int,int> endPos,
 	}else
 		return true;
 }
+
+bool Figure::moveBishop(std::pair<int,int> startPos, std::pair<int,int> endPos, Board& boardObj ) {
+
+	char* tempTable;
+	boardObj.getBoard(&tempTable);
+	char (*board)[BOARD_SIZE] = reinterpret_cast<char (*)[BOARD_SIZE]>(tempTable);
+
+	if( abs(endPos.first - startPos.first) != abs(endPos.second - startPos.second) ) {
+		if(boardObj.getComputerPlayer())
+			cout << "To nie jest poprawny ruch dla gonca!" << endl;
+		return false;
+	}
+	else {
+		int dirX = (endPos.first - startPos.first > 0) ? 1 : -1;
+		int dirY = (endPos.second - startPos.second > 0) ? 1 : -1;
+		int x = startPos.first + dirX;
+		int y = startPos.second + dirY;
+
+		while(! (x == endPos.first) ) {
+			if (board[x][y] != '.') {
+				if(boardObj.getComputerPlayer())
+					cout << "Droga ruchu figury nie jest pusta!" << endl;
+				return false;
+			}
+			x += dirX;
+			y += dirY;
+		}
+	}
+	return true;
+}
+
+bool Figure::moveQueen(std::pair<int,int> startPos, std::pair<int,int> endPos, Board& boardObj ) {
+
+	if (moveRook(startPos, endPos, boardObj) || moveBishop(startPos, endPos, boardObj)) {
+		return true;
+	}
+	else {
+		if(boardObj.getComputerPlayer())
+			cout << "To nie jest poprawny ruch krolowej!" << endl;
+		return false;
+	}
+
+}
+
+
