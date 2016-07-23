@@ -270,5 +270,3 @@ bool Figure::moveQueen(std::pair<int,int> startPos, std::pair<int,int> endPos, B
 	}
 
 }
-
-

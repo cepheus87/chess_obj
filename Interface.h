@@ -19,6 +19,7 @@
 #include <iomanip>
 
 #include "Board.h"
+#include "Computer.h"
 
 #ifdef _WIN32
     #include <windows.h>
@@ -34,7 +35,7 @@ public:
 	void draw(Board &);
 	void menu();
 	void help();
-	void gameType(Board&);
+	void gameType(Board&, Computer&);
 	void clearLine(short y);
 	void clearScreen();
 	std::string checkCommands(std::string);

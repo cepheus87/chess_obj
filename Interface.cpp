@@ -177,7 +177,7 @@ void Interface::clearScreen()
 	#endif
 }
 
-void Interface::gameType(Board& board) {
+void Interface::gameType(Board& board, Computer& comp) {
 
 	string type="";
 	string wrongType ="Nie ma takiego trybu! Podaj jeszcze raz.";
@@ -195,6 +195,9 @@ void Interface::gameType(Board& board) {
 		if (checkedGameType=="a") { //computerPlayer ma byc true
 			if(!board.getComputerPlayer()) {
 				board.changeComputerPlayer();
+			}
+			if(!comp.getPlayWithComputer()) {
+				comp.changePlayWithComputer();
 			}
 			getchar();
 			clearScreen();

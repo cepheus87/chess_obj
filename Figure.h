@@ -31,6 +31,7 @@ public:
 	bool moveKnight(std::pair<int,int>, std::pair<int,int>, Board& );
 	bool moveBishop(std::pair<int,int>, std::pair<int,int>, Board&);
 	bool moveQueen(std::pair<int,int>, std::pair<int,int>, Board&);
+
 };
 
 #endif /* FIGURE_H_ */

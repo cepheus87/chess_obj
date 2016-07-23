@@ -40,7 +40,6 @@ private:
 	bool isAllowed(std::pair<int,int>, char [BOARD_SIZE][BOARD_SIZE], bool);
 	bool isEmpty(std::pair<int,int>, char board[BOARD_SIZE][BOARD_SIZE] );
 
-
 	int startXPostoDrow;
 	int startYPostoDrow;
 	int endXPostoDrow;

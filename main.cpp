@@ -1,6 +1,7 @@
 #include "Board.h"
 #include "Figure.h"
 #include "Interface.h"
+#include "Computer.h"
 
 using namespace std;
 
@@ -11,12 +12,13 @@ int main(int argc, char* argv[])
 		system("clear");
 	#endif
 
+
 	Interface inter;
 	Board board(true, false);		//Pierwsza zmienna(opcja gry z komputerem: player = false; computerPlayer = true) druga zmienna: gra dla dwoch graczy: (false - gra dla dwoch graczy, true - gra z komputerem).
+	Computer computer(false);
 	bool player = true;				// du¿e pionki
 
-	inter.gameType(board);
-
+	inter.gameType(board, computer);
 	inter.draw(board);
 	inter.menu();     //wypisanie instrukcji
 
@@ -39,38 +41,42 @@ int main(int argc, char* argv[])
 			}
 			else
 			{
-
 				if( board.getComputerPlayer() || board.getTwoPlayers() ){
 					msg_Command = "CZARNY: Prosze podac polecenie lub pole pionka i pole docelowe ruchu: ";
 				}else{
 					msg_Command = "KOMPUTER: Czekaj... ";
 				}
-
 			}
 
 		inter.gotoXY(0,17);
 		cout << msg_Command;
-		std::getline(std::cin,command);
-		std::string modyfiedCommand = inter.checkCommands(command);
 
-		if (modyfiedCommand=="help")
+		if(!computer.getPlayWithComputer() || player)
+			{
+			std::getline(std::cin,command);
+			std::string modyfiedCommand = inter.checkCommands(command);
+
+			if (modyfiedCommand=="help")
 			{
 				inter.clearLine(17);
 				inter.gotoXY(0,17);
 				inter.help();
-			}else if (modyfiedCommand=="quit")
-				{
+			}
+			if (modyfiedCommand=="quit")
+			{
 				inter.clearLine(17);
 				inter.gotoXY(0,17);
 				cout <<"Wyjscie z gry"<<endl;
 				exit='t';
-			}else{
+			}
+		}
 
-				//Sprawdzanie poprawnosci wpisanej komendy
-				bool moveCorrectness = board.checkMove(command,board);
+		if(!computer.getPlayWithComputer() || player) // warunek do grania  1v1 || warunek do grania 1vsCPU
+		{
+			bool moveCorrectness = board.checkMove(command,board);
 
-				if(moveCorrectness){
-
+			if(moveCorrectness)
+			{
 
 					string startPosition = "";
 					string endPosition = "";
@@ -84,21 +90,23 @@ int main(int argc, char* argv[])
 					pair<int,int> endPos = board.getPosition(endPosition);
 
 					if(chessPiece.isYour(endPos, board) )
-					{
-						bool chessPieceMoveCorrectness = chessPiece.move(startPos, endPos, board);
+						{
+							bool chessPieceMoveCorrectness = chessPiece.move(startPos, endPos, board);
 
-						if(chessPieceMoveCorrectness){
+							if(chessPieceMoveCorrectness){
 
-							board.move(startPosition, endPosition, board, player);   //jesli komenda poprawna - wykonaj ruch
-							inter.changeFigurePosition(board);
+								board.move(startPosition, endPosition, board, player);   //jesli komenda poprawna - wykonaj ruch
+								inter.changeFigurePosition(board);
+							}
 						}
-					}
 
-				} else {
-				//jesli komenda nie poprawna
-				inter.gotoXY(0,19);
-				if(board.getComputerPlayer())
-					cout<<"Ruch nie zostanie wykonany. Podaj jeszcze raz potrzebne pola!"<<endl;
+				}
+				else
+				{
+					//jesli komenda nie poprawna
+					inter.gotoXY(0,19);
+					if(board.getComputerPlayer())
+						cout<<"Ruch nie zostanie wykonany. Podaj jeszcze raz potrzebne pola!"<<endl;
 				}
 
 				inter.gotoXY(0,20);
@@ -106,8 +114,48 @@ int main(int argc, char* argv[])
 
 				//Oczekiwanie na enter
 				while (getchar() != '\n'){}
+		}
+
+		if(computer.getPlayWithComputer() && !player) //ruch komputera
+		{
+			cout << "Ruch komputera..." << endl;
+			while(1)
+			{
+				string generatedMove = computer.generate(board);
+
+				startPosition.insert( 0, generatedMove, 0, 2 );
+				endPosition.insert( 0, generatedMove, 2, 2 );
+				//cout << "startPosition: " << startPosition << endl;
+				//cout << "endPosition: " << endPosition << endl;
+
+				Figure chessPiece(board.getChessPiece(startPosition),player);
+
+				pair<int,int> startPos = board.getPosition(startPosition);
+				pair<int,int> endPos = board.getPosition(endPosition);
+
+				bool chessPieceMoveCorrectness = chessPiece.move(startPos, endPos, board);
+
+				if(chessPieceMoveCorrectness)
+					{
+
+					board.move(startPosition, endPosition, board, player);   //jesli komenda poprawna - wykonaj ruch
+					inter.changeFigurePosition(board);
+					break;
+					}
+
+				startPosition = "";
+				endPosition = "";
+				startPos.first = 0;
+				startPos.second = 0;
+				endPos.first = 0;
+				endPos.second = 0;
 			}
-	}while(exit != 't');
+			inter.gotoXY(0,20);
+			cout << "Nacisnij ENTER aby kontynulowac...";
 
-
+			//Oczekiwanie na enter
+			while (getchar() != '\n'){}
+		}
+	}
+	while(exit != 't');
 }
