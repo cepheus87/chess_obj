@@ -12,7 +12,6 @@ int main(int argc, char* argv[])
 		system("clear");
 	#endif
 
-
 	Interface inter;
 	Board board(true, false);		//Pierwsza zmienna(opcja gry z komputerem: player = false; computerPlayer = true) druga zmienna: gra dla dwoch graczy: (false - gra dla dwoch graczy, true - gra z komputerem).
 	Computer computer(false);
@@ -91,15 +90,48 @@ int main(int argc, char* argv[])
 
 					if(chessPiece.isYour(endPos, board) )
 						{
-							bool chessPieceMoveCorrectness = chessPiece.move(startPos, endPos, board);
+							bool chessPieceMoveCorrectness = chessPiece.move(player,startPos, endPos, board);
 
 							if(chessPieceMoveCorrectness){
 
 								board.move(startPosition, endPosition, board, player);   //jesli komenda poprawna - wykonaj ruch
 								inter.changeFigurePosition(board);
+
+								//!Sprawdzanie szachu i szach-matu
+								std::pair<int,int> checks=chessPiece.isItCheck(!player,board);
+								if(checks.first!=100) //jesli jest szach
+								{
+									if(chessPiece.isItCheckMate(!player,checks,board))
+								    {//Jest szach mat
+										inter.clearLine(19);
+										inter.clearLine(18);
+								        if(!player)
+								        {
+								         cout<<"SZACH MAT dla gracza bialego"<<endl;
+								         cout<<"Brawo! Wygral gracz bialy!"<<endl;
+								        }
+								        else
+								        {
+								        cout <<"SZACH MAT dla gracza czarnego"<<endl;
+								        cout<<"Brawo! Wygral gracz czarny!"<<endl;
+								         }
+								          exit='t';
+								     }
+									 else
+									 {//Jest tylko szach
+										 inter.clearLine(18);
+										 if(!player)
+										 {
+											 cout<<"SZACH dla gracza bialego"<<endl;
+										 }
+										 else
+										 {
+											 cout <<"SZACH dla gracza czarnego"<<endl;
+										 }
+									 }
+								}
 							}
 						}
-
 				}
 				else
 				{
@@ -108,11 +140,8 @@ int main(int argc, char* argv[])
 					if(board.getComputerPlayer())
 						cout<<"Ruch nie zostanie wykonany. Podaj jeszcze raz potrzebne pola!"<<endl;
 				}
-
 				inter.gotoXY(0,20);
 				cout << "Nacisnij ENTER aby kontynulowac...";
-
-				//Oczekiwanie na enter
 				while (getchar() != '\n'){}
 		}
 
@@ -125,24 +154,55 @@ int main(int argc, char* argv[])
 
 				startPosition.insert( 0, generatedMove, 0, 2 );
 				endPosition.insert( 0, generatedMove, 2, 2 );
-				//cout << "startPosition: " << startPosition << endl;
-				//cout << "endPosition: " << endPosition << endl;
 
 				Figure chessPiece(board.getChessPiece(startPosition),player);
 
 				pair<int,int> startPos = board.getPosition(startPosition);
 				pair<int,int> endPos = board.getPosition(endPosition);
 
-				bool chessPieceMoveCorrectness = chessPiece.move(startPos, endPos, board);
+				bool chessPieceMoveCorrectness = chessPiece.move(player,startPos, endPos, board);
 
 				if(chessPieceMoveCorrectness)
 					{
 
 					board.move(startPosition, endPosition, board, player);   //jesli komenda poprawna - wykonaj ruch
 					inter.changeFigurePosition(board);
+					//!Sprawdzanie szachu i szach-matu
+					std::pair<int,int> checks=chessPiece.isItCheck(!player,board);
+					if(checks.first!=100) //jesli jest szach
+					{
+						if(chessPiece.isItCheckMate(!player,checks,board))
+					    {//Jest szach mat
+							inter.clearLine(19);
+							inter.clearLine(18);
+					        if(!player)
+					        {
+					         cout<<"SZACH MAT dla gracza bialego"<<endl;
+					         cout<<"Brawo! Wygral gracz bialy!"<<endl;
+					        }
+					        else
+					        {
+					        cout <<"SZACH MAT dla gracza czarnego"<<endl;
+					        cout<<"Brawo! Wygral gracz czarny!"<<endl;
+					         }
+					          exit='t';
+					     }
+						 else
+						 {//Jest tylko szach
+							 inter.clearLine(18);
+							 if(!player)
+							 {
+								 cout<<"SZACH dla gracza bialego"<<endl;
+							 }
+							 else
+							 {
+								 cout <<"SZACH dla gracza czarnego"<<endl;
+							 }
+						 }
+					}
 					break;
 					}
-
+				generatedMove = "";
 				startPosition = "";
 				endPosition = "";
 				startPos.first = 0;
@@ -152,7 +212,6 @@ int main(int argc, char* argv[])
 			}
 			inter.gotoXY(0,20);
 			cout << "Nacisnij ENTER aby kontynulowac...";
-
 			//Oczekiwanie na enter
 			while (getchar() != '\n'){}
 		}
