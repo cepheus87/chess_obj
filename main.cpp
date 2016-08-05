@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 	string msg_Command;
 	char exit = 'n';
 
-	game.gameStart(inter, board, computer);
+	game.gameStart(inter, board, computer, argc, argv);
 
 	do
 	{

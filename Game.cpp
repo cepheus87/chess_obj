@@ -13,11 +13,77 @@ Game::Game() {
 	// TODO Auto-generated constructor stub
 }
 
-void Game::gameStart(Interface& inter, Board& board, Computer& computer)
+int Game::connect(Connector& c)
+{
+	int retVal;
+    cout << "Connecting, please wait..." << endl;
+    if ((retVal = c.connect()) == 1) {
+        cout << "I am player 1, waiting for player 2 to connect..." << endl;
+        if (c.waitForConnection()) {
+            cout << "Player 2 connected!" << endl;
+			return 1;
+        } else
+            cout << "Player 2 did not connect during the specified timeout!" << endl;
+    } else {
+        cout << "I am player 2" << endl;
+	}
+	return retVal;
+}
+
+
+
+int Game::terminalGame(int argc, char *argv[])
+{
+	srand((unsigned)time(NULL));
+
+	    Connector c;
+		if ((argc == 2) && (strstr(argv[1], "reset") != NULL)) {	// if the last run of the program ends with any error then call the program with the reset parameter
+			c.reset();
+			return 0;
+		}
+	    cout << "connecting..." << endl;
+	    int playerNr = connect(c);
+		int i = 0;
+		do {
+			if (playerNr == 1){
+//				player1(c);
+			}
+			else if (playerNr == 2){
+//				player2(c);
+			}
+			if (c.errCode != CONNECTOR_NO_ERROR)
+			{
+				cout << "error, errCode = " << hex << c.errCode << endl;
+				return 1;
+			}
+			wait(3);
+			i++;
+		} while (i < 5);
+
+		cout << "disconnecting..." << endl;
+		c.disconnect();
+
+		if (c.errCode != CONNECTOR_NO_ERROR)
+		{
+			cout << "error while disconnecting, errCode = " << hex << c.errCode << endl;
+			return 1;
+		}
+}
+
+void Game::gameStart(Interface& inter, Board& board, Computer& computer, int argc, char *argv[] )
 {
 
 	inter.gameType(board, computer);
+
+	if(inter.getTerminalMode())
+	{
+		terminalGame(argc, argv);
+	}
+
 	inter.draw(board);
+
+
+
 	inter.menu();     //wypisanie instrukcji
 }
 

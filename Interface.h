@@ -28,6 +28,8 @@
 using namespace std;
 
 class Interface {
+private:
+	bool terminalMode;
 public:
 	Interface();
 	virtual ~Interface();
@@ -40,6 +42,7 @@ public:
 	void clearScreen();
 	std::string checkCommands(std::string);
 	void changeFigurePosition(Board &);
+	bool getTerminalMode ();
 };
 
 #endif /* INTERFACE_H_ */

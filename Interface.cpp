@@ -9,6 +9,7 @@
 
 Interface::Interface() {
 	// TODO Auto-generated constructor stub
+	terminalMode = 0;
 
 }
 
@@ -216,6 +217,7 @@ void Interface::gameType(Board& board, Computer& comp) {
 			if(board.getComputerPlayer()) {
 				board.changeComputerPlayer();
 				board.changeTwoPlayers();
+				terminalMode = 1;
 			}
 			getchar();
 			clearScreen();
@@ -228,6 +230,11 @@ void Interface::gameType(Board& board, Computer& comp) {
 		cin >> type;
 		clearLine(5);
 	}
+}
+
+bool Interface::getTerminalMode()
+{
+	return terminalMode;
 }
 
 Interface::~Interface() {
