@@ -22,7 +22,7 @@
 #include "Computer.h"
 
 #ifdef _WIN32
-    #include <windows.h>
+#include <windows.h>
 #endif
 
 using namespace std;
@@ -33,16 +33,16 @@ private:
 public:
 	Interface();
 	virtual ~Interface();
-	void gotoXY(short,short) const;
+	void gotoXY(short, short) const;
 	void draw(Board &);
 	void menu();
 	void help();
 	void gameType(Board&, Computer&);
 	void clearLine(short y);
 	void clearScreen();
-	std::string checkCommands(std::string);
+	string checkCommands(string);
 	void changeFigurePosition(Board &);
-	bool getTerminalMode ();
+	bool getTerminalMode();
 };
 
 #endif /* INTERFACE_H_ */

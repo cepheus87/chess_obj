@@ -20,15 +20,14 @@
 #include <cstring>
 
 #ifdef _WIN32
-    #include <windows.h>
+#include <windows.h>
 #endif
 
 using namespace std;
 
 const int BOARD_SIZE = 8;
 
-class Board
-{
+class Board {
 
 private:
 	char* fBoard;
@@ -36,9 +35,9 @@ private:
 	int fBoardSize;
 
 	void allocBoardMem();
-	void init(char [BOARD_SIZE][BOARD_SIZE]);
-	bool isAllowed(std::pair<int,int>, char [BOARD_SIZE][BOARD_SIZE], bool);
-	bool isEmpty(std::pair<int,int>, char board[BOARD_SIZE][BOARD_SIZE] );
+	void init(char[BOARD_SIZE][BOARD_SIZE]);
+	bool isAllowed(pair<int, int>, char[BOARD_SIZE][BOARD_SIZE], bool);
+	bool isEmpty(pair<int, int>, char board[BOARD_SIZE][BOARD_SIZE]);
 
 	int startXPostoDrow;
 	int startYPostoDrow;
@@ -52,29 +51,29 @@ private:
 public:
 	Board(bool, bool);
 	virtual ~Board();
-	void getBoard( char* []);
+	void getBoard(char*[]);
 	int getBoardSize() const;
 	bool checkMove(std::string&, Board&);
-	void move(std::string, std::string, Board& ,bool &);
-	void move(std::pair<int,int>, std::pair<int,int>, Board&, bool& );
-	bool checkPlayer(std::pair<int,int>, char [BOARD_SIZE][BOARD_SIZE], bool &);
+	void move(std::string, std::string, Board&, bool &);
+	void move(pair<int, int>, pair<int, int>, Board&, bool&);
+	bool checkPlayer(pair<int, int>, char[BOARD_SIZE][BOARD_SIZE], bool &);
 	bool checkFigure(string&, string&, string&, Board&, bool&, char&);
-	std::pair<int,int> getPosition(std::string);
+	pair<int, int> getPosition(std::string);
 
-	int getStartXPostoDrow ();
-	int getStartYPostoDrow ();
-	int getEndXPostoDrow ();
-	int getEndYPostoDrow ();
-	char getChosenFigure ();
+	int getStartXPostoDrow();
+	int getStartYPostoDrow();
+	int getEndXPostoDrow();
+	int getEndYPostoDrow();
+	char getChosenFigure();
 	bool getComputerPlayer();
 	bool getTwoPlayers();
 
 	void changeComputerPlayer();
 	void changeTwoPlayers();
 
-	char getChessPiece(std::string );
-	char getChessPiece(std::pair<int,int>);
-	bool isEmpty(std::pair<int,int>);
+	char getChessPiece(std::string);
+	char getChessPiece(std::pair<int, int>);
+	bool isEmpty(std::pair<int, int>);
 
 };
 

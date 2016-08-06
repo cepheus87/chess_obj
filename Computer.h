@@ -13,7 +13,6 @@
 #include "Board.h"
 #include "Figure.h"
 
-
 #ifndef COMPUTER_H_
 #define COMPUTER_H_
 

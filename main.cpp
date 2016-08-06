@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
 
 	Game game;
 	Interface inter;
-	Board board(true, false);//Pierwsza zmienna(opcja gry z komputerem: player = false; computerPlayer = true) druga zmienna: gra dla dwoch graczy: (false - gra dla dwoch graczy, true - gra z komputerem).
+	Board board(true, false); //Pierwsza zmienna(opcja gry z komputerem: player = false; computerPlayer = true) druga zmienna: gra dla dwoch graczy: (false - gra dla dwoch graczy, true - gra z komputerem).
 	Computer computer(false);
 	Connector c;
 
