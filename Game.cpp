@@ -48,7 +48,7 @@ bool Game::player1(Connector& c, string commandMove, Interface& inter, Board& bo
 
 	startPosition.insert( 0, msg, 0, 2 );
 	endPosition.insert( 0, msg, 3, 2 );
-	cout<<startPosition<<" ; "<<endPosition<<endl;
+
 	pair<int,int> startPos = board.getPosition(startPosition);
 	pair<int,int> endPos = board.getPosition(endPosition);
 
@@ -228,31 +228,14 @@ void Game::pressEnterToContinue(Interface& inter)
 	while (getchar() != '\n'){}
 }
 
+
+
 void Game::playerMove(string& startPosition, string& endPosition, string& command, Board& board, bool& player, Interface& inter, char& exit)
 {
-	startPosition = "";
-	endPosition = "";
-
-	startPosition.insert( 0, command, 0, 2 );
-	endPosition.insert( 0, command, 2, 2 );
-
-	pair<int,int> startPos = board.getPosition(startPosition);
-	pair<int,int> endPos = board.getPosition(endPosition);
-
 	Figure chessPiece(board.getChessPiece(startPosition),player);
-
-	if(chessPiece.isYour(endPos, board) )
-		{
-			bool chessPieceMoveCorrectness = chessPiece.move(player,startPos, endPos, board);
-
-			if(chessPieceMoveCorrectness){
-
-				board.move(startPosition, endPosition, board, player);
-				inter.changeFigurePosition(board);
-
-				checkAndCheckMateVerification(chessPiece, player, board, inter, exit);
-			}
-		}
+	board.move(startPosition, endPosition, board, player);
+	inter.changeFigurePosition(board);
+	checkAndCheckMateVerification(chessPiece, player, board, inter, exit);
 }
 
 void Game::computerMove(Computer& computer, string& startPosition, string& endPosition, string& command, Board& board, bool& player, Interface& inter, char& exit)

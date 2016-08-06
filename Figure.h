@@ -1,7 +1,7 @@
 #ifndef FIGURE_H_
 #define FIGURE_H_
 
-#include"Board.h"
+#include "Board.h"
 
 class Figure
 {

@@ -6,6 +6,7 @@
  */
 
 #include "Board.h"
+#include "Figure.h"
 
 using namespace std;
 
@@ -282,6 +283,34 @@ std::pair<int,int> Board::getPosition(std::string pos)
 		}
 
 		return posPair;
+}
+
+bool Board::checkFigure(string& startPosition, string& endPosition, string& command, Board& board, bool& player, char& exit)
+{
+
+	startPosition = "";
+	endPosition = "";
+
+	startPosition.insert( 0, command, 0, 2 );
+	endPosition.insert( 0, command, 2, 2 );
+
+	pair<int,int> startPos = board.getPosition(startPosition);
+	pair<int,int> endPos = board.getPosition(endPosition);
+
+	Figure chessPiece(board.getChessPiece(startPosition),player);
+
+	if(chessPiece.isYour(endPos, board) )
+	{
+		bool chessPieceMoveCorrectness = chessPiece.move(player,startPos, endPos, board);
+
+		if(chessPieceMoveCorrectness)
+		{
+			return 1;
+		}
+	}
+
+	return 0;
+
 }
 
 void Board::move(std::pair<int,int> startPos, std::pair<int,int> endPos, Board &boardObj, bool &player )

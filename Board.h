@@ -17,13 +17,13 @@
 #include <sstream>
 #include <cctype>
 #include <iomanip>
-
+#include <cstring>
 
 #ifdef _WIN32
     #include <windows.h>
 #endif
 
-
+using namespace std;
 
 const int BOARD_SIZE = 8;
 
@@ -58,6 +58,7 @@ public:
 	void move(std::string, std::string, Board& ,bool &);
 	void move(std::pair<int,int>, std::pair<int,int>, Board&, bool& );
 	bool checkPlayer(std::pair<int,int>, char [BOARD_SIZE][BOARD_SIZE], bool &);
+	bool checkFigure(string&, string&, string&, Board&, bool&, char&);
 	std::pair<int,int> getPosition(std::string);
 
 	int getStartXPostoDrow ();
