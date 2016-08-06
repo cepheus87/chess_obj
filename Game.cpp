@@ -30,26 +30,76 @@ int Game::connect(Connector& c)
 	return retVal;
 }
 
-
-
-int Game::terminalGame(int argc, char *argv[])
+bool Game::player1(Connector& c, string commandMove, Interface& inter, Board& board, bool player, char& exit)
 {
-	srand((unsigned)time(NULL));
 
-	    Connector c;
-		if ((argc == 2) && (strstr(argv[1], "reset") != NULL)) {	// if the last run of the program ends with any error then call the program with the reset parameter
-			c.reset();
-			return 0;
+	string move = commandMove;
+	cout << "Sending my move to player 2: " << move << endl;
+	c.send(move);
+
+	string msg;
+	cout << "Waiting for response from player 2..." << endl;
+	c.receive(msg);
+
+	cout << "Player 2 sent: " << msg << endl;
+
+	string startPosition = "";
+	string endPosition = "";
+
+	startPosition.insert( 0, msg, 0, 2 );
+	endPosition.insert( 0, msg, 3, 2 );
+	cout<<startPosition<<" ; "<<endPosition<<endl;
+	pair<int,int> startPos = board.getPosition(startPosition);
+	pair<int,int> endPos = board.getPosition(endPosition);
+
+	bool tempPlayer = player;
+
+	Figure chessPiece(board.getChessPiece(startPosition),tempPlayer);
+
+	if(chessPiece.isYour(endPos, board) )
+		{
+			bool chessPieceMoveCorrectness = chessPiece.move(tempPlayer,startPos, endPos, board);
+
+			if(chessPieceMoveCorrectness){
+
+				board.move(startPosition, endPosition, board, tempPlayer);
+				inter.changeFigurePosition(board);
+
+				checkAndCheckMateVerification(chessPiece, tempPlayer, board, inter, exit);
+			}
 		}
-	    cout << "connecting..." << endl;
-	    int playerNr = connect(c);
-		int i = 0;
-		do {
+
+
+	return (c.errCode == CONNECTOR_NO_ERROR);
+}
+
+bool Game::player2(Connector& c, string commandMove, Interface& inter, Board& board, bool player, char& exit)
+{
+
+	inter.gotoXY(0,19);
+
+	string move = commandMove;
+	cout << "Sending my move to player 1:  " << move << endl;
+	c.send(move);
+
+	return (c.errCode == CONNECTOR_NO_ERROR);
+}
+
+int Game::terminalGame(int playerNr, Connector& c, string commandMove, Interface& inter, Board& board, bool player, char& exit)
+{
+	for (int i=0; i<=5;i++)
+	{
+		inter.clearLine(19+i);
+	}
+
+	inter.gotoXY(0,19);
+	int i = 0;
+	//do {
 			if (playerNr == 1){
-//				player1(c);
+				player1(c, commandMove, inter, board, player, exit);
 			}
 			else if (playerNr == 2){
-//				player2(c);
+				player2(c, commandMove, inter, board, player, exit);
 			}
 			if (c.errCode != CONNECTOR_NO_ERROR)
 			{
@@ -58,8 +108,8 @@ int Game::terminalGame(int argc, char *argv[])
 			}
 			wait(3);
 			i++;
-		} while (i < 5);
-
+	//} while (i < 1);
+/*
 		cout << "disconnecting..." << endl;
 		c.disconnect();
 
@@ -67,24 +117,19 @@ int Game::terminalGame(int argc, char *argv[])
 		{
 			cout << "error while disconnecting, errCode = " << hex << c.errCode << endl;
 			return 1;
-		}
+		}*/
 }
 
-void Game::gameStart(Interface& inter, Board& board, Computer& computer, int argc, char *argv[] )
+void Game::gameStart(Interface& inter, Board& board, Computer& computer)
 {
 
 	inter.gameType(board, computer);
 
-	if(inter.getTerminalMode())
+	if (!inter.getTerminalMode())
 	{
-		terminalGame(argc, argv);
+		inter.draw(board);
+		inter.menu();     //wypisanie instrukcji
 	}
-
-	inter.draw(board);
-
-
-
-	inter.menu();     //wypisanie instrukcji
 }
 
 void Game::whoseMoveInformation(string& msg_Command, Board& board, Interface& inter, bool& player )
@@ -178,7 +223,7 @@ void Game::wrongCommand(Interface& inter, Board& board)
 
 void Game::pressEnterToContinue(Interface& inter)
 {
-	inter.gotoXY(0,20);
+	inter.gotoXY(0,22);
 	cout << "Nacisnij ENTER aby kontynulowac...";
 	while (getchar() != '\n'){}
 }

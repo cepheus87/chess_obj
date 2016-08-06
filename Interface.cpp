@@ -9,7 +9,7 @@
 
 Interface::Interface() {
 	// TODO Auto-generated constructor stub
-	terminalMode = 0;
+	terminalMode = false;
 
 }
 
@@ -217,8 +217,8 @@ void Interface::gameType(Board& board, Computer& comp) {
 			if(board.getComputerPlayer()) {
 				board.changeComputerPlayer();
 				board.changeTwoPlayers();
-				terminalMode = 1;
 			}
+			terminalMode = true;
 			getchar();
 			clearScreen();
 			break;
